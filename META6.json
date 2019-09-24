@@ -25,6 +25,6 @@
         "copy"
     ],
     "test-depends" : [
-        "Test::META",
+        "Test::META"
     ]
 }
