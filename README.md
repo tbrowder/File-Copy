@@ -32,3 +32,5 @@ Copyright (c) 2019 Tom Browder, all rights reserved.
 
 This program is free software; you can redistribute it or modify
 it under the same terms as Perl 6 itself.
+
+See that license [here](./LICENSE).
