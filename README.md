@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/tbrowder/Date-Names-Perl6.svg?branch=master)](https://travis-ci.org/tbrowder/Date-Names-Perl6)
+[![Build Status](https://travis-ci.org/tbrowder/File-Copy.svg?branch=master)](https://travis-ci.org/tbrowder/File-Copy)
 
 # File::Copy
 
