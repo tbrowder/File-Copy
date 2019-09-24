@@ -71,7 +71,7 @@ multi sub copy(IO::Path $from where *.f,
               ) is export {
     my $f = $from.IO.basename;
     mkdir $to if $create-dir;
-    copy $f, "$to/$f";
+    $from.copy: $to;
 }
 
 multi sub copy(IO::Path $from where *.d, IO::Path $to, :$create-dir, :$force, :$prompt, :$debug) is export {
