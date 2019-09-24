@@ -1,7 +1,7 @@
 use Test;
 use Test::Output;
 
-use File::Copy :ALL;
+use File::Copy;
 
 plan *;
 
@@ -28,26 +28,16 @@ END {
 # the existing test directory
 # DO NOT MODIFY IT WITH THESE TESTS
 constant $tdir = 't/test-doc';
-	
+
 #===== the actual tests:
-lives-ok { tree $tdir; }
-
-done-testing;
-
-exit;
-
-# file to non-existent file
-lives-ok { Copy $f1, $f3; }
 
 # file to existent file
-dies-ok { Copy $f1, $f2; }
+lives-ok { copy $f1, $f2; }
+
+# file to non-existent file
+dies-ok { copy $f1, $f3; }
 
 # dir to existing file
-dies-ok { Copy $d2, $f1; }
-
-# rm an existing dir
-lives-ok { Rmdir $d1; }
-
+dies-ok { copy $d2, $f1; }
 
 done-testing;
-
