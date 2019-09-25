@@ -7,7 +7,7 @@ use File::Find;
 B<copy> copies files and directories from one
 location to another.
 
-If the C<$from> location is acdirectory, all files
+If the C<$from> location is a directory, all files
 and directories B<below> C<$from> will be copied to the
 C<$to> location. A fatal error will be thrown
 if C<$from> is a directory and C<$to> is a file.
@@ -62,42 +62,22 @@ Examples:
 #     $from.copy($to, :$createonly)
 # }
 
+my $debug = 0;
+
 #| Copy file to dir
 multi sub copy(IO::Path $from where *.f,
                IO::Path $to where $to.IO.d,
-               :$create-dir,
                :$force,
-               :$prompt,
               ) is export {
-    my $f = $from.IO.basename;
-    mkdir $to if $create-dir;
+    mkdir $to if !$to.IO.d;
     $from.copy: $to;
 }
 
-multi sub copy(IO::Path $from where *.d, IO::Path $to, :$create-dir, :$force, :$prompt, :$debug) is export {
-
-    #| Fail to copy a directory and its files to another file
-    if $from.IO.d && $to.IO.f {
-        die "FAILURE: Cannot copy a directory ($from) onto a file ($to)";
-    }
-
-    #| Copy file to directory
-    if $from.IO.f && $to.IO.d {
-        my $f = $from.IO.basename;
-        copy $f, "$to/$f";
-        return;
-    }
-
-    #| Copy directory and its files to another directory
-    my $err1 = 0;
-    my $err2 = 0;
-    ++$err1 unless $from.IO.d;
-    ++$err2 unless $to.IO.d;
-    if $err1 || $err2 {
-        note "ERROR: Location '$from' is not a directory" if $err1;
-        note "ERROR: Location '$to' is not a directory" if $err2;
-        die "FATAL: Too many errors.";
-    }
+#| Copy directory and its files to another directory
+multi sub copy(IO::Path $from where *.d,
+               IO::Path $to where *.d,
+               :$force,
+              ) is export {
 
     for $from.dirs -> $d {
         if $d.IO.d {
