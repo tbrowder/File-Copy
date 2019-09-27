@@ -30,12 +30,12 @@ $ p6doc File::Copy
 CREDITS
 =======
 
-Thanks for help from:
+Thanks for help from IRC `#perl6` friends:
 
-+ @sena_kun
-+ @tony-o
-+ @antoniogamez
-+ @jmerelo
++ `sena_kun` (for insights on implementing enhanced versions of built-in routines)
++ `tony-o` (for improving the `.travis.yml` file for faster testing)
++ `antoniogamez` (for insights on advanced use of `Raku` (aka Perl 6))
++ `jmerelo` (for keeping us all focused on the big picture)
 
 AUTHOR
 ======
