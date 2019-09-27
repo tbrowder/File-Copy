@@ -10,7 +10,8 @@ routines such as: `move`, `rename`, and `rmdir`.
 
 ## Synopsis:
 
-~~~
+
+```
 #!/usr/bin/env perl6
 
 use File::Copy;
@@ -18,14 +19,14 @@ use File::Copy;
 # ...create some directories and files...
 copy $file, $dir1;
 copy $dir1, $dir1;
-~~~
+```
 
 See the internal documentation in the terminal window
 by entering:
 
-~~~
+```
 $ p6doc File::Copy
-~~~
+```
 
 CREDITS
 =======
