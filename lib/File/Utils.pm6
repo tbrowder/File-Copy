@@ -2,6 +2,25 @@ unit module File::Utils;
 
 #`{{
 
+At the moment this module is used to support testing of module
+`File::Copy` and prospective users are cautioned that it is not well
+tested otherwise.
+
+}}
+
+#| @list is output from 'list-files'
+sub strip-dir($dir, @list) is export(:strip-dir) {
+    my @p;
+    for @list -> $p is copy {
+        $p ~~ s/^$dir//;
+        @p.append: $p;
+    }
+    return @p;
+}
+
+
+#`{{
+
  Thanks to @antoniogomez and his Documentable module!
 
 }}

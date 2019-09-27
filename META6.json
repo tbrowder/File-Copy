@@ -12,7 +12,8 @@
     "name" : "File::Copy",
     "perl" : "6.*",
     "provides" : {
-        "File::Copy" : "lib/File/Copy.pm6"
+        "File::Copy"  : "lib/File/Copy.pm6",
+        "File::Utils" : "lib/File/Utils.pm6"
     },
     "resources" : [ ],
     "source-type" : "git",

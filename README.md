@@ -20,6 +20,23 @@ copy $file, $dir1;
 copy $dir1, $dir1;
 ~~~
 
+See the internal documentation in the terminal window
+by entering:
+
+~~~
+$ p6doc File::Copy
+~~~
+
+CREDITS
+=======
+
+Thanks for help from:
+
++ @sena_kun
++ @tony-o
++ @antoniogamez
++ @jmerelo
+
 AUTHOR
 ======
 

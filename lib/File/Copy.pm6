@@ -2,33 +2,39 @@ unit module File::Copy;
 
 use File::Find;
 
-#|{{
+#`{{
 
-B<copy> copies files and directories from one
-location to another.
+Possible copy LHS (from), RHS (to) situations:
 
-If the C<$from> location is a directory, all files
-and directories B<below> C<$from> will be copied to the
-C<$to> location. A fatal error will be thrown
-if C<$from> is a directory and C<$to> is a file.
+    LHS        RHS        RESULT
+    ===        ===        ======
+    from.f     to.f       copy from.f -> to.f
+               !to.e      copy from.f -> to.f
+               to.d       copy from.f -> to.d/from.f
 
-Errors will also be thrown if the permissions in either
-location are not appropriate for the selected operation.
+    from.d     to.f       THROW
+               to.d       copy from.d/* -> to.d/*
+               !to.e      create to.d, copy from.d/* -> to.d/*
 
-No files will be overwritten unless the C<:force> option
-is selected.
-
-Alternatively, one can use the C<:prompt> option for
-choosing individual files to be overwritten.
-
-Examples:
-
-    A/B/c
-
-    copy "A", "D";
-
+    !from.e    Any        THROW
 
 }}
+
+=begin pod
+
+B<copy> copies files and directories from one location to another.
+
+If the C<$from> location is a directory, all files and directories
+B<below> C<$from> will be copied to the C<$to> location. A fatal error
+will be thrown if C<$from> is a directory and C<$to> is a file.
+
+Errors will also be thrown if the permissions in either location are
+not appropriate for the selected operation.
+
+Existing files B<will> be overwritten unless the C<:createonly> option
+is selected.
+
+=end pod
 
 # the existing built-in method on class IO::Path
 #   from: https://github.com/rakudo/rakudo/src/core.c/IO/Path.pm6
@@ -64,42 +70,91 @@ Examples:
 
 my $debug = 0;
 
-#| Copy file to dir
-multi sub copy(IO::Path $from where *.f,
-               IO::Path $to where $to.IO.d,
-               :$force,
+#| Copy a file to a file
+multi sub copy(IO::Path $from where {$from.e and $from.f},
+               IO::Path $to where *.f,
+               :$createonly,
               ) is export {
-    mkdir $to if !$to.IO.d;
-    $from.copy: $to;
+    copy $from, $to, :$createonly;
 }
 
-#| Copy directory and its files to another directory
-multi sub copy(IO::Path $from where *.d,
-               IO::Path $to where *.d,
-               :$force,
+#| Copy a file to an existing directory
+multi sub copy(IO::Path $from where {$from.e and $from.f},
+               IO::Path $to where {$from.e and $to.d},
+               :$createonly,
+              ) is export {
+    copy $from, "{$to}/{$from.basename}", :$createonly;
+}
+
+#| Copy a directory's files and directories to another directory
+multi sub copy(IO::Path $from where {$from.e and $from.d},
+               IO::Path $to where {$from.e and $to.d},
+               :$createonly,
               ) is export {
 
-    for $from.dirs -> $d {
-        if $d.IO.d {
-            note "DEBUG: \$from child '$d' is a directory" if $debug;
+    mkdir $to if $to.IO !~~ .e;
+
+    if $debug {
+        my $f = $from.d ?? "$from/" !! $from;
+        my $t = $to.d ?? "$to/" !! $to;
+        note "DEBUG: from: ''; to: ''";
+    }
+
+    # copy from a dir and its files to a dir:
+    #   from/           to/
+    #   from/a          to/a
+    #   from/A/         to/A/
+    #          b        to/A/b
+    #          c        to/A/c
+    #        D/         to/D/
+    #          e        to/D/e
+
+    # the recursive example from the docs:
+    #   sub MAIN($dir = '.') {
+    #       my @todo = $dir.IO;
+    #       while @todo {
+    #           for @todo.pop.dir -> $path {
+    #               say $path.Str;
+    #               @todo.push: $path if $path.d;
+    #           }
+    #       }
+    #   }
+
+    my @fils;
+    my @dirs;
+    for $from.IO.dir -> $p {
+        if $p.d {
+            @dirs.append: $p;
         }
         else {
-            note "DEBUG: \$from child '$d' is a file";
+            @fils.append: $p;
         }
     }
 
-    for $to.dirs -> $d {
-        if $d.IO.d {
-            note "DEBUG: \$from child '$d' is a directory";
-        }
-        else {
-            note "DEBUG: \$from child '$d' is a file";
-        }
+    note "DEBUG: from dir: '$from'" if $debug;
+    note "DEBUG: files:" if $debug;
+
+    #| Copy all the files in $from first
+    for @fils -> $f {
+        note "    $f" if $debug;
+        copy $f, "{$to}/{$f.basename}";
     }
+
+    note "DEBUG: dirs:" if $debug;
+    #| Then resursively copy the sub directories
+    for @dirs -> $d {
+        note "debug: copy $d, {$to}/{$d.basename}" if $debug;
+        my $todir = "{$to}/{$d.basename}";
+        mkdir $todir;
+        copy $d, "{$to}/{$d.basename}".IO;
+    }
+    #die "DEBUG exit" if $debug;
+
 }
 
 =finish
 
+# for future use:
 sub rename($from, $to, :$force, :$prompt) is export(:rename) {
     move($from, $to, :$force, :$prompt) is export(:move);
 }
