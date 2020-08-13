@@ -13,8 +13,11 @@ Possible copy LHS (from), RHS (to) situations:
                to.d       copy from.f -> to.d/from.f
 
     from.d     to.f       THROW
-               to.d       copy from.d/* -> to.d/*
-               !to.e      create to.d, copy from.d/* -> to.d/*
+               to.d       copy from.d/*.f -> to.d/*
+                          for from.d/*.d -> {
+                              copy p.d -> 
+                          }
+               !to.e      mkdir to.d; copy from.d/* -> to.d/*
 
     !from.e    Any        THROW
 
@@ -70,6 +73,7 @@ is selected.
 
 my $debug = 0;
 
+=begin comment
 #| Copy a file to a file
 multi sub copy(IO::Path $from where {$from.e and $from.f},
                IO::Path $to where *.f,
@@ -77,22 +81,24 @@ multi sub copy(IO::Path $from where {$from.e and $from.f},
               ) is export {
     copy $from, $to, :$createonly;
 }
+=end comment
+
 
 #| Copy a file to an existing directory
 multi sub copy(IO::Path $from where {$from.e and $from.f},
-               IO::Path $to where {$from.e and $to.d},
+               IO::Path $to where {$to.e and $to.d},
                :$createonly,
+               --> True
               ) is export {
     copy $from, "{$to}/{$from.basename}", :$createonly;
 }
 
 #| Copy a directory's files and directories to another directory
 multi sub copy(IO::Path $from where {$from.e and $from.d},
-               IO::Path $to where {$from.e and $to.d},
+               IO::Path $to where {$to.e and $to.d},
                :$createonly,
+               --> True
               ) is export {
-
-    mkdir $to if $to.IO !~~ .e;
 
     if $debug {
         my $f = $from.d ?? "$from/" !! $from;

@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/tbrowder/File-Copy.svg?branch=master)](https://travis-ci.org/tbrowder/File-Copy)
+[![Build Status](https://travis-ci.com/tbrowder/File-Copy.svg?branch=master)](https://travis-ci.com/tbrowder/File-Copy)
 
 # File::Copy
 
@@ -12,13 +12,13 @@ routines such as: `move`, `rename`, and `rmdir`.
 
 
 ```
-#!/usr/bin/env perl6
+#!/usr/bin/env raku
 
 use File::Copy;
 
 # ...create some directories and files...
 copy $file, $dir1;
-copy $dir1, $dir1;
+copy $dir1, $dir2;
 ```
 
 See the internal documentation in the terminal window
@@ -31,7 +31,7 @@ $ p6doc File::Copy
 CREDITS
 =======
 
-Thanks for help from IRC `#perl6` friends:
+Thanks for help from IRC `#raku` friends:
 
 + `sena_kun` (for insights on implementing enhanced versions of built-in routines)
 + `tony-o` (for improving the `.travis.yml` file for faster testing)
@@ -46,9 +46,9 @@ Tom Browder, `<tom.browder@gmail.com>`
 COPYRIGHT & LICENSE
 ===================
 
-Copyright (c) 2019 Tom Browder, all rights reserved.
+Copyright (c) 2019-2020 Tom Browder, all rights reserved.
 
 This program is free software; you can redistribute it or modify
-it under the same terms as Perl 6 itself.
+it under the same terms as Raku itself.
 
 See that license [here](./LICENSE).
