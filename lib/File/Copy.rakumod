@@ -1,4 +1,4 @@
-unit module File::Copy:ver<0.0.1>;
+unit module File::Copy:ver<0.0.2>;
 
 use File::Find;
 
