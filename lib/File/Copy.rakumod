@@ -1,4 +1,4 @@
-unit module File::Copy;
+unit module File::Copy:ver<2>;
 
 use File::Find;
 
@@ -15,7 +15,7 @@ Possible copy LHS (from), RHS (to) situations:
     from.d     to.f       THROW
                to.d       copy from.d/*.f -> to.d/*
                           for from.d/*.d -> {
-                              copy p.d -> 
+                              copy p.d ->
                           }
                !to.e      mkdir to.d; copy from.d/* -> to.d/*
 

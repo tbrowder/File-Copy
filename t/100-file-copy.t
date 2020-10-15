@@ -8,6 +8,7 @@ plan 8;
 # use some new test files and directories
 my $f1 = './t/f1';
 spurt $f1, "some text";
+
 my $f2 = './t/f2';
 spurt $f2, "some text";
 # a non-existent file
@@ -39,12 +40,12 @@ my $tdir = './t/test-doc'.IO;
 lives-ok { copy $f1, $f2; }
 is (slurp $f2), (slurp $f1);
 
-# file to existing file
-dies-ok { copy $f1, $f3, :createonly; }
-
 # file to non-existing file
 lives-ok { copy $f1, $f3; }
 is (slurp $f3), (slurp $f1);
+
+# file to existing file
+dies-ok { copy $f1, $f3, :createonly; }
 
 # dir to existing file
 dies-ok { copy $d2, $f1; }
