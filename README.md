@@ -4,6 +4,8 @@
 
 # FILES AND DIRS MAY BE LOST WITHOUT NOTICE
 
+# THIS MODULE IS BEING REMOVED FROM CPAN
+
 **copy** copies files and directories from one location to another.
 Its behavior is intended to be very similar to the POSIX 'cp' program.
 
