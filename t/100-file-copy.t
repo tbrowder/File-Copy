@@ -3,7 +3,7 @@ use Test;
 use File::Copy;
 use File::Utils :list-files, :strip-dir;
 
-#plan 8;
+my $debug = 0;
 
 # use some new test files and directories
 my $f1 = './t/f1';
@@ -23,7 +23,7 @@ my $d2 = './t/A/C';
 
 # delete all of them when finished
 END {
-    if 0 {
+    if not $debug {
         unlink $f1;
         unlink $f2;
         unlink $f3;
