@@ -18,6 +18,9 @@ my $d1 = './t/A/B'.IO;
 mkdir $d1;
 # a non-existent directory
 my $d2 = './t/A/C';
+# an empty directory
+my $d3 = './t/A/D';
+mkdir $d3;
 
 # delete all of them when finished
 END {
@@ -54,11 +57,14 @@ die "FATAL: dir \$d1 does not exist" if not $d1.IO.d;
 say "exe 3";
 copy $tdir, $d1; # }, "copy contents of one dir to another";
 
-# dir to existing file
+# empty dir to empty dir
 die "FATAL: dir \$d1 does not exist" if not $d1.IO.d;
-die "FATAL: file \$f1 does not exist" if not $f1.IO.f;
+die "FATAL: dir \$d3 does not exist" if not $d3.IO.d;
+say "exe 5";
+copy $d1, $d3; #}, "throw when trying to copy dir to an existing file";
+
 # TODO fix problem of trying to copy dir to a file, should not touch the existing file!!
-say "exe 4";
+say "exe 5";
 copy $d1, $f1; #}, "throw when trying to copy dir to an existing file";
 
 #is $f1.IO.f, "file should be untouched from attempt to copy a dir to it";
