@@ -1,4 +1,7 @@
 {{$NEXT}}
+    - delete nqp stuff for now
+    - use 3-os tests
+    - use substitute for prove6 on Windows
     - remove travis file
 
 0.0.2  2020-10-15T17:46:53-05:00
