@@ -28,6 +28,7 @@ END {
         unlink $f2;
         unlink $f3;
         shell "rm -rf $d0";
+        shell "rm -rf $d1";
     }
 }
 
@@ -41,19 +42,19 @@ my $tdir = './t/test-doc'.IO;
 lives-ok { 
     copy $f1, $f2; 
 }, "copy file to existing file";
-is $f2.slurp, $f1.slurp, "copied file is identical to original";
+is $f2.IO.slurp, $f1.IO.slurp, "copied file is identical to original";
 
 # file to non-existing file
 lives-ok { 
     copy $f1, $f3; 
 }, "copy file to non-existing file";
-is $f3.slurp, $f1.slurp, "copied file is identical to original";
+is $f3.IO.slurp, $f1.IO.slurp, "copied file is identical to original";
 
 # file to existing file
 die "FATAL: file \$f3 does not exist" if not $f3.IO.f;
 dies-ok { 
     copy $f1, $f3, :createonly;
-}, "throw with :createonly and don't overwrite an existing file";
+}, "Throw with :createonly and don't overwrite an existing file";
 
 # dir to dir
 # copy one dir to another
