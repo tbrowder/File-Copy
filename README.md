@@ -12,7 +12,7 @@ THIS MODULE IS BEING REMOVED FROM CPAN
 Description
 -----------
 
-`copy` copies files and directories from one location to another. Its behavior is intended to be very similar to the POSIX `cp` program.
+Exported function `cp` copies files and directories from one location to another. Its behavior is intended to be very similar to the POSIX `cp` program.
 
 If the `$from` location is a directory, it and all its contents will be recursively copied to the `$to` location. A fatal error will be thrown if `$from` is a directory and `$to` is a file.
 

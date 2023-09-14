@@ -10,7 +10,7 @@
 
 =head2 Description
 
-C<copy> copies files and directories from one location to another.
+Exported function C<cp> copies files and directories from one location to another.
 Its behavior is intended to be very similar to the POSIX C<cp> program.
 
 If the C<$from> location is a directory, it and all its contents will
@@ -22,6 +22,5 @@ not appropriate for the selected operation.
 
 Existing files B<will> be overwritten unless the C<:createonly> option
 is selected.
-
 
 =end pod
