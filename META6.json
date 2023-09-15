@@ -15,7 +15,7 @@
   "perl": "6.*",
   "provides": {
     "File::Copy": "lib/File/Copy.rakumod",
-    "File::Utils": "lib/File/Utils.rakumod"
+    "File::Copy::Utils": "lib/File/Copy/Utils.rakumod"
   },
   "resources": [
   ],
