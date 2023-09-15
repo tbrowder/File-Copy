@@ -1,5 +1,7 @@
 unit module File::Copy::Utils;
 
+use File::Find;
+
 #`{{
 
 At the moment this module is used to support testing of module
@@ -18,20 +20,10 @@ sub strip-dirs($dir, @list) is export(:strip-dirs) {
     return @p;
 }
 
-
-#`{{
-
- Thanks to @antoniogomez and his Documentable module!
-
-}}
-
-#| Get a list of files inside a directory.
-sub list-files($dir, :$recursive = False) is export(:list-files) {
-    my @fils;
-         gather for dir($dir) {
-             take .Str if not .d;
-             take slip sort list-files $_ if .d;
-         }
+#| Get a list of files and possible subdirs inside a directory.
+sub list-files($dir, Bool :$recursive --> List) is export(:list-files) {
+    my @paths = find :$dir, :$recursive;
+    @paths
 }
 
 #| This function returns a List of IO objects. Each IO object is one

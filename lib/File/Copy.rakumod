@@ -44,13 +44,7 @@ is selected.
 
 my $debug = 0;
 
-my sub get-typ($p) {
-    return 'dir' if $p.d;
-    return 'fil' if $p.f;
-    return 'unknown';
-}
-
-sub cp(IO() $from, IO() $to, :$createonly, :$r, :$i, :$q) is export {
+sub cp(IO() $from, IO() $to, Bool :$createonly, Bool :$r, Bool :$i, :$q) is export {
    
     # take care of the easy part first
     if $from.f and not $to.d {
@@ -69,12 +63,35 @@ sub cp(IO() $from, IO() $to, :$createonly, :$r, :$i, :$q) is export {
         # collect all files and dirs in $from and
         # transfer them as individual files, making
         # subdirs as needed in $to
-        my @paths;
+        my @frompaths;
         if not $r {
-            @paths = find :dir($from), :type<file>;
+            @frompaths = find :dir($from);
         }
         else {
-            @paths = find :dir($from), :type<file>, :recursive;
+            @frompaths = find :dir($from), :recursive;
+        }
+        # cycle through the paths and ensure all subdirs are created
+        # in the new directory
+        my $subpath;
+        my $topath;
+        for @frompaths -> $frompath {
+            # transform the from path to the new path 
+            $subpath = $frompath;
+            $subpath ~~ s/$from\///;
+            $topath = "$to/$subpath";
+
+            #note "DEBUG: full path: |$path|";
+            # say the subdir part;
+            #note "DEBUG: subdir path: |$subdir|";
+            #exit;
+
+            if $topath.IO.d {
+                # create the subdir in the $to directory
+                mkdir $topath
+            }
+            else {
+                copy $frompath, $topath;
+            }
         }
     }
 }
