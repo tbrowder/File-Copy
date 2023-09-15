@@ -65,10 +65,10 @@ sub cp(IO() $from, IO() $to, Bool :$createonly, Bool :$r, Bool :$i, :$q) is expo
         # subdirs as needed in $to
         my @frompaths;
         if not $r {
-            @frompaths = find :dir($from);
+            @frompaths = find :dir($from), :!recursive;
         }
         else {
-            @frompaths = find :dir($from), :recursive;
+            @frompaths = find :dir($from);
         }
         # cycle through the paths and ensure all subdirs are created
         # in the new directory

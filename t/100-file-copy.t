@@ -63,12 +63,12 @@ dies-ok {
 die "FATAL: dir \$tdir does not exist" if not $tdir.IO.d;
 die "FATAL: dir \$d1 does not exist" if not $d1.IO.d;
 lives-ok { 
-    cp $tdir, $d1 
+    cp $tdir, $d1 , :r;
 }, "cp contents of one dir to another";
 
 # compare dirs with is-deeply
 my @f1 = list-files("$d1").sort;
-#note "output of copied-to-dir \@f1: {@f1.raku}";
+note "output of copied-to-dir \@f1: {@f1.raku}";
 @f1 = strip-dirs $d1, @f1;
 #note "stripped-dirs output of copied-to-dir \@f1: {@f1.raku}";
 
