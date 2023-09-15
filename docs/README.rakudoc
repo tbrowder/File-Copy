@@ -2,19 +2,22 @@
 
 =begin pod
 
-=head1 WARNING: THIS MODULE IS EXPERIMENTAL
+=TITLE B<File::Copy> - Provides the essential functions of the POSIX C<cp> command
 
-=head1 FILES AND DIRS MAY BE LOST WITHOUT NOTICE
+=SYNOPSIS 
 
-=head1 THIS MODULE IS BEING REMOVED FROM CPAN
+=begin code
+use File::Copy; # exports routine 'cp'
+cp "/use/share/fonts/", "/home/fonts"; # the trailing slash is not required
+=end code
 
-=head2 Description
+=head1 DESCRIPTION
 
 Exported function C<cp> copies files and directories from one location to another.
-Its behavior is intended to be very similar to the POSIX C<cp> program.
+Its behavior is intended to be very similar to the POSIX C<cp> utility program.
 
-If the C<$from> location is a directory, it and all its contents will
-be recursively copied to the C<$to> location. A fatal error will be
+If the C<$from> location is a directory, it and all its top-level files will
+copied to the C<$to> location. A fatal error will be
 thrown if C<$from> is a directory and C<$to> is a file.
 
 Errors will also be thrown if the permissions in either location are
@@ -22,5 +25,16 @@ not appropriate for the selected operation.
 
 Existing files B<will> be overwritten unless the C<:createonly> option
 is selected.
+
+Current options:
+
+=item C<-i> 'interactive' - Asks permission to overwite an existing file.
+
+=item C<-r> 'recursive' - When the source is a directory, copy recursively.
+
+=item C<:createonly> - Existing files will <not> be overwritten, but notice will be given.
+
+=item C<-q> 'quiet' - Only fatal errors will be reported.  
+
 
 =end pod

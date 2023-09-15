@@ -1,4 +1,4 @@
-unit module File::Copy:ver<0.0.2>;
+unit module File::Copy;
 
 use File::Find;
 
@@ -50,7 +50,7 @@ my sub get-typ($p) {
     return 'unknown';
 }
 
-sub cp(IO() $from, IO() $to, :$createonly) is export {
+sub cp(IO() $from, IO() $to, :$createonly, :$r, :$i, :$q) is export {
    
     # take care of the easy part first
     if $from.f and not $to.d {
@@ -60,7 +60,7 @@ sub cp(IO() $from, IO() $to, :$createonly) is export {
     }
 
     if $from.d and $to.f {
-        # the core should fail on this after my PR
+        # the core should fail on this
         $from.copy($to, :$createonly);
         return;
     }
@@ -69,17 +69,17 @@ sub cp(IO() $from, IO() $to, :$createonly) is export {
         # collect all files and dirs in $from and
         # transfer them as individual files, making
         # subdirs as needed in $to
-        return;
+        my @paths;
+        if not $r {
+            @paths = find :dir($from), :type<file>;
+        }
+        else {
+            @paths = find :dir($from), :type<file>, :recursive;
+        }
     }
 }
 
 =finish
-               :$createonly,
-              ) is export {
-    copy $from, $to, :$createonly;
-}
-=end comment
-
 
 #| Copy a file to an existing directory
 multi sub copy(IO::Path $from where {$from.e and $from.f},
@@ -89,19 +89,6 @@ multi sub copy(IO::Path $from where {$from.e and $from.f},
               ) is export {
 
     note "DEBUG-2: trying to copy file to a dir" if 1;
-
-    =begin comment
-    my $F = CPath.new: $from;
-    $F.copy($to, :$createonly);
-    =end comment
-
-    =begin comment
-    use nqp;
-    nqp::if(
-        $to.d,
-        ($to.=add($from.basename))
-    );
-    =end comment
 
     my $topath = "{$to.absolute}/{$from.basename}".IO;
     copy $from.absolute, $topath, :$createonly;
