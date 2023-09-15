@@ -2,6 +2,7 @@ use Test;
 
 use File::Copy;
 use File::Copy::Utils :list-files, :strip-dirs;
+use Proc::Easier;
 
 my $debug = 0;
 
@@ -15,7 +16,8 @@ spurt $f2, "some more text";
 my $f3 = './t/f3';
 
 my $d0 = './t/A';
-shell "rm -rf $d0" if 1 and $d0.IO.d;
+
+cmd "rm -rf $d0" if 1 and $d0.IO.d;
 my $d1 = './t/A/B'.IO;
 mkdir $d1;
 # a non-existent directory
@@ -27,8 +29,8 @@ END {
         unlink $f1;
         unlink $f2;
         unlink $f3;
-        shell "rm -rf $d0";
-        shell "rm -rf $d1";
+        cmd "rm -rf $d0";
+        cmd "rm -rf $d1";
     }
 }
 
