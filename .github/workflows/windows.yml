@@ -26,6 +26,5 @@ jobs:
         run: zef install --/test --test-depends --deps-only .
       - name: Run Tests
         run: |
-            raku -I. t/1-basic.t
-            raku -I. t/2-module-list.t
-            raku -I. t/3-os-info.t
+            raku -I. t/001-load.t
+            raku -I. t/100-file-copy.t
