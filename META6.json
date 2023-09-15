@@ -7,6 +7,7 @@
   "build-depends": [
   ],
   "depends": [
+    "Proc::Easier",
     "File::Find:ver<0.2.0>"
   ],
   "description": "Provides enhancements to the built-in routine 'copy'.",
