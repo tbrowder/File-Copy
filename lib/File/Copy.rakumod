@@ -85,7 +85,7 @@ sub cp(IO() $from, IO() $to, Bool :$createonly, Bool :$r, Bool :$i, :$q) is expo
             #note "DEBUG: subdir path: |$subdir|";
             #exit;
 
-            if $topath.IO.d {
+            if $frompath.IO.d {
                 # create the subdir in the $to directory
                 mkdir $topath
             }

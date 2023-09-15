@@ -68,14 +68,17 @@ lives-ok {
 
 # compare dirs with is-deeply
 my @f1 = list-files("$d1").sort;
-note "output of copied-to-dir \@f1: {@f1.raku}";
+#note "output of copied-to-dir \@f1: {@f1.raku}";
 @f1 = strip-dirs $d1, @f1;
+#note "stripped-dirs output of copied-to-dir \@f1: {@f1.raku}";
+
 my @f2 = list-files("$tdir").sort;
-note "output of \@f2: {@f2.raku}";
+#note "output of \@f2: {@f2.raku}";
 @f2 = strip-dirs $tdir, @f2;
+#note "stripped-dirs output of \@f2: {@f2.raku}";
 # temp blocked
 # TODO fix this
-#is-deeply @f1, @f2, "Ensure dir-to-dir cp works and both dirs\' contents are identical";
+is-deeply @f1, @f2, "Ensure dir-to-dir cp works and both dirs\' contents are identical";
 
 # dir to existing file
 die "FATAL: dir \$d1 does not exist" if not $d1.IO.d;
