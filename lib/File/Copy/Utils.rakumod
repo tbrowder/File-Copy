@@ -1,4 +1,4 @@
-unit module File::Utils;
+unit module File::Copy::Utils;
 
 #`{{
 
@@ -26,7 +26,8 @@ sub strip-dir($dir, @list) is export(:strip-dir) {
 }}
 
 #| Get a list of files inside a directory.
-sub list-files ($dir) is export(:list-files) {
+sub list-files($dir, :$recursive = False) is export(:list-files) {
+    my @fils;
          gather for dir($dir) {
              take .Str if not .d;
              take slip sort list-files $_ if .d;
@@ -35,8 +36,8 @@ sub list-files ($dir) is export(:list-files) {
 
 #| This function returns a List of IO objects. Each IO object is one
 #| file in $dir.
-sub recursive-dir($dir) is export(:recursive-dir) {
-    my @todo = $dir;
+sub recursive-dir($dir --> List) is export(:recursive-dir) {
+    my @todo = $dir; # current dir is the only element at the start
     gather while @todo {
         my $d = @todo.shift;
         next if ! $d.IO.e;
@@ -49,6 +50,7 @@ sub recursive-dir($dir) is export(:recursive-dir) {
             }
         }
     }
+    @todo
 }
 
 #| Get a resource file from the installation or the development
@@ -58,7 +60,6 @@ sub zef-path($filename) is export(:zef-path) {
     die "Path to $filename not found" unless $filepath;
     return $filepath;
 }
-
 
 sub tree($dir = '.', :$debug) is export(:tree) {
     constant $sp = '  ';

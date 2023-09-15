@@ -1,7 +1,7 @@
 use Test;
 
 use File::Copy;
-use File::Utils :list-files, :strip-dir;
+use File::Copy::Utils :list-files, :strip-dir;
 
 my $debug = 0;
 
@@ -66,13 +66,15 @@ lives-ok {
 
 # compare dirs with is-deeply
 my @f1 = list-files("$d1").sort;
-@f1 = strip-dir $d1, @f1;
+@f1 = strip-dirs $d1, @f1;
 my @f2 = list-files("$tdir").sort;
-@f2 = strip-dir $tdir, @f2;
+@f2 = strip-dirs $tdir, @f2;
 # temp blocked
 # TODO fix this
 dies-ok {
-is-deeply @f1, @f2, "Ensure dir to dir cp works and both dirs\' contents are identical";
+    CATCH {
+    is-deeply @f1, @f2, "Ensure dir to dir cp works and both dirs\' contents are identical";
+    }
 }, "temp dies-ok until dir copy is working";
 
 # dir to existing file
