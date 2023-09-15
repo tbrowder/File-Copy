@@ -1,7 +1,7 @@
 use Test;
 
 use File::Copy;
-use File::Copy::Utils :list-files, :strip-dir;
+use File::Copy::Utils :list-files, :strip-dirs;
 
 my $debug = 0;
 
@@ -71,7 +71,7 @@ my @f2 = list-files("$tdir").sort;
 @f2 = strip-dirs $tdir, @f2;
 # temp blocked
 # TODO fix this
-#    is-deeply @f1, @f2, "Ensure dir to dir cp works and both dirs\' contents are identical";
+#is-deeply @f1, @f2, "Ensure dir to dir cp works and both dirs\' contents are identical";
 
 # dir to existing file
 die "FATAL: dir \$d1 does not exist" if not $d1.IO.d;

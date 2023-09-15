@@ -9,7 +9,7 @@ tested otherwise.
 }}
 
 #| @list is output from 'list-files'
-sub strip-dir($dir, @list) is export(:strip-dir) {
+sub strip-dirs($dir, @list) is export(:strip-dirs) {
     my @p;
     for @list -> $p is copy {
         $p ~~ s/^$dir//;
