@@ -44,11 +44,19 @@ is selected.
 
 my $debug = 0;
 
-sub cp(IO() $from, IO() $to, Bool :$createonly, Bool :$r, Bool :$i, :$q) is export {
+sub cp(IO() $from, 
+       IO() $to, 
+       Bool :$createonly, 
+       Bool :$r, 
+       Bool :$i, 
+       Bool :$v,
+       Bool :$debug,
+      ) is export {
    
     # take care of the easy part first
     if $from.f and not $to.d {
         # the core should take care of this okay
+        say "Copying file '$from' to file '$to'." if $v;
         $from.copy($to, :$createonly);
         return;
     }
@@ -63,13 +71,18 @@ sub cp(IO() $from, IO() $to, Bool :$createonly, Bool :$r, Bool :$i, :$q) is expo
         # collect all files and dirs in $from and
         # transfer them as individual files, making
         # subdirs as needed in $to
+
+        # must consider the options recurse, interactive, createonly, quiet
         my @frompaths;
         if not $r {
+            say "Collecting paths (non-recursively) from directory '$from'." if $v;
             @frompaths = find :dir($from), :!recursive;
         }
         else {
+            say "Collecting paths (recursively) from directory '$from'." if $v;
             @frompaths = find :dir($from);
         }
+
         # cycle through the paths and ensure all subdirs are created
         # in the new directory
         my $subpath;
@@ -87,13 +100,28 @@ sub cp(IO() $from, IO() $to, Bool :$createonly, Bool :$r, Bool :$i, :$q) is expo
 
             if $frompath.IO.d {
                 # create the subdir in the $to directory
+                say "Creating directory '$topath'." if $v;
                 mkdir $topath
             }
             else {
-                copy $frompath, $topath;
+                say "Copying file '$frompath' to directory '$topath'." if $v;
+                copy $frompath, $topath, :$createonly;
             }
         }
+        return
     }
+
+    if $from.f and $to.d {
+        my $topath = "$to/{$from.basename}";
+        say "Copying file '$from' to directory '$to'." if $v;
+        copy $from, $topath, :$createonly;
+        return;
+    }
+
+    die q:to/HERE/;
+        FATAL: Unexpected situation.
+               Please file an issue with as much detail as possible.
+        HERE
 }
 
 =finish
