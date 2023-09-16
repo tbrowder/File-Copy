@@ -17,7 +17,7 @@ Its behavior is intended to be very similar to the POSIX C<cp> utility program.
 If the C<$from> location is a directory, it and all its top-level files will
 copied to the C<$to> location. A fatal error will be
 thrown if C<$from> is a directory and C<$to> is a file.
-If the recursive option (C<:r>) is used, all below the C<&from> path
+If the recursive option (C<:r>) is used, all below the C<from> path
 will be copied.
 
 Errors will also be thrown if the permissions in either location are
@@ -28,9 +28,9 @@ is selected.
 
 Current named options:
 
-=item C<:i> 'interactive' - Asks permission to overwite an existing file.
+=item C<:i> 'interactive' - Asks permission to overwrite an existing file.
 
-=item C<:r> 'recursive' - When the source is a directory, copy recursively.
+=item C<:r> 'recursive' - When the source (C<$from>) is a directory, copy recursively.
 
 =item C<:createonly> - Existing files will <not> be overwritten, but notice will be given.
 

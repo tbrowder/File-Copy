@@ -18,7 +18,7 @@ DESCRIPTION
 
 Exported function `cp` copies files and directories from one location to another. Its behavior is intended to be very similar to the POSIX `cp` utility program.
 
-If the `$from` location is a directory, it and all its top-level files will copied to the `$to` location. A fatal error will be thrown if `$from` is a directory and `$to` is a file. If the recursive option (`:r`) is used, all below the `&from` path will be copied.
+If the `$from` location is a directory, it and all its top-level files will copied to the `$to` location. A fatal error will be thrown if `$from` is a directory and `$to` is a file. If the recursive option (`:r`) is used, all below the `from` path will be copied.
 
 Errors will also be thrown if the permissions in either location are not appropriate for the selected operation.
 
@@ -26,9 +26,9 @@ Existing files **will** be overwritten unless the `:createonly` option is select
 
 Current named options:
 
-  * `:i` 'interactive' - Asks permission to overwite an existing file.
+  * `:i` 'interactive' - Asks permission to overwrite an existing file.
 
-  * `:r` 'recursive' - When the source is a directory, copy recursively.
+  * `:r` 'recursive' - When the source (`$from`) is a directory, copy recursively.
 
   * `:createonly` - Existing files will <not> be overwritten, but notice will be given.
 
