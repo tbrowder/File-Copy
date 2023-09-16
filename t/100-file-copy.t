@@ -97,6 +97,9 @@ die "FATAL: file \$f1 does not exist" if not $f1.IO.f;
 die "FATAL: dir \$d1 does not exist" if not $d1.IO.d;
 lives-ok { 
     cp $f1, $d1; 
-}
+}, "cp file to directory works";
+#say $f1.IO.slurp;
+#say "$d1/{$f1.IO.basename}".IO.slurp;
+is $f1.IO.slurp, "$d1/{$f1.IO.basename}".IO.slurp, "files are identical";
 
 done-testing;

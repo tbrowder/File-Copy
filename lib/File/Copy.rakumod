@@ -87,7 +87,7 @@ sub cp(IO() $from,
         # in the new directory
         my $subpath;
         my $topath;
-        for @frompaths -> $frompath {
+        PATH: for @frompaths -> $frompath {
             # transform the from path to the new path 
             $subpath = $frompath;
             $subpath ~~ s/$from\///;
@@ -101,10 +101,27 @@ sub cp(IO() $from,
             if $frompath.IO.d {
                 # create the subdir in the $to directory
                 say "Creating directory '$topath'." if $v;
-                mkdir $topath
+                mkdir $topath;
             }
             else {
                 say "Copying file '$frompath' to directory '$topath'." if $v;
+                if $i and $topath.IO.f {
+                    my $repeat = 1;
+                    while $repeat {
+                        my $res = prompt "Overwrite the existing file (y/N)? ";
+                        if $res ~~ /:i y/ {
+                            say "Continuing with copying...";
+                            $repeat = 0;
+                        }
+                        elsif $res ~~ /:i n/ {
+                            say "Skipping this file...";
+                            next PATH;
+                        }
+                        else {
+                            say "'$res' is an invalid response.";
+                        }
+                    }
+                }
                 copy $frompath, $topath, :$createonly;
             }
         }

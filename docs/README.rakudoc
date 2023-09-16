@@ -1,5 +1,3 @@
-#[![Build Status](https://dev.azure.com/tbrowder/File-Copy/_apis/build/status/tbrowder.File-Copy?branchName=master)](https://dev.azure.com/tbrowder/File-Copy/_build/latest?definitionId=1&branchName=master)
-
 =begin pod
 
 =TITLE B<File::Copy> - Provides the essential functions of the POSIX C<cp> command
