@@ -22,6 +22,7 @@ sub strip-dirs($dir, @list) is export(:strip-dirs) {
 
 #| Get a list of files and possible subdirs inside a directory.
 sub list-files($dir, Bool :$recursive --> List) is export(:list-files) {
+    #die "DEBUG resursive = False";
     my @paths = find :$dir, :$recursive;
     @paths
 }
