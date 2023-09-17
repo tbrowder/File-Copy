@@ -8,7 +8,6 @@
   ],
   "depends": [
     "Proc::Easier",
-    "Temp::Path",
     "File::Find:ver<0.2.0>"
   ],
   "description": "Provides enhancements to the built-in routine 'copy'.",
