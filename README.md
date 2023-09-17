@@ -11,7 +11,7 @@ SYNOPSIS
 
 
     use File::Copy; # exports routine 'cp'
-    cp "/use/share/fonts/", "/home/fonts"; # the trailing slash is not required
+    cp "/usr/share/fonts/", "/home/fonts"; # the trailing slash is not required
 
 DESCRIPTION
 ===========
@@ -33,6 +33,8 @@ Current named options:
   * `:createonly` - Existing files will <not> be overwritten, but notice will be given.
 
   * `:v` 'verbose' - Informs the user about copying details.
+
+See an example Raku program using this module in the module package repository at [examples](examples).
 
 AUTHOR
 ======
