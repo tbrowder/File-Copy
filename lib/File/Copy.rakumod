@@ -46,10 +46,10 @@ my $debug = 0;
 
 sub cp(IO() $from, 
        IO() $to, 
-       Bool :$c, 
-       Bool :$r, 
-       Bool :$i, 
-       Bool :$v,
+       Bool :createonly(:$c), 
+       Bool :recursive(:$r), 
+       Bool :interactive(:$i), 
+       Bool :verbose(:$v),
        Bool :$debug,
       ) is export {
    

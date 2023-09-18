@@ -28,13 +28,13 @@ is selected.
 
 Current named options:
 
-=item C<:i> 'interactive' - Asks permission to overwrite an existing file.
+=item C<:i> (or C<:interactive>) - Asks permission to overwrite an existing file.
 
-=item C<:r> 'recursive' - When the source (C<$from>) is a directory, copy recursively.
+=item C<:r> (or C<:recursive>) - When the source (C<$from>) is a directory, copy recursively.
 
-=item C<:createonly> - Existing files will <not> be overwritten, but notice will be given.
+=item C<:c> (or C<:createonly>) - Existing files will <not> be overwritten, but notice will be given.
 
-=item C<:v> 'verbose' - Informs the user about copying details.
+=item C<:v> (or C<:verbose>) - Informs the user about copying details.
 
 See an example Raku program using this module in the module package repository
 at L<examples>.

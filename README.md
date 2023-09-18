@@ -26,13 +26,13 @@ Existing files **will** be overwritten unless the `:createonly` option is select
 
 Current named options:
 
-  * `:i` 'interactive' - Asks permission to overwrite an existing file.
+  * `:i` (or `:interactive`) - Asks permission to overwrite an existing file.
 
-  * `:r` 'recursive' - When the source (`$from`) is a directory, copy recursively.
+  * `:r` (or `:recursive`) - When the source (`$from`) is a directory, copy recursively.
 
-  * `:createonly` - Existing files will <not> be overwritten, but notice will be given.
+  * `:c` (or `:createonly`) - Existing files will <not> be overwritten, but notice will be given.
 
-  * `:v` 'verbose' - Informs the user about copying details.
+  * `:v` (or `:verbose`) - Informs the user about copying details.
 
 See an example Raku program using this module in the module package repository at [examples](examples).
 
