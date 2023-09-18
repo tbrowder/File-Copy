@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/tbrowder/File-Copy/workflows/linux.yml/badge.svg)](https://github.com/tbrowder/File-Copy/actions) [![Actions Status](https://github.com/tbrowder/File-Copy/workflows/macos.yml/badge.svg)](https://github.com/tbrowder/File-Copy/actions) [![Actions Status](https://github.com/tbrowder/File-Copy/workflows/windows.yml/badge.svg)](https://github.com/tbrowder/File-Copy/actions)
+[![Actions Status](https://github.com/tbrowder/File-Copy/actions/workflows/linux.yml/badge.svg)](https://github.com/tbrowder/File-Copy/actions) [![Actions Status](https://github.com/tbrowder/File-Copy/actions/workflows/macos.yml/badge.svg)](https://github.com/tbrowder/File-Copy/actions) [![Actions Status](https://github.com/tbrowder/File-Copy/actions/workflows/windows.yml/badge.svg)](https://github.com/tbrowder/File-Copy/actions)
 
 TITLE
 =====
