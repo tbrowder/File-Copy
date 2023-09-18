@@ -37,7 +37,7 @@ will be thrown (by the core) if C<$from> is a directory and C<$to> is a file.
 Errors will also be thrown (by the core) if the permissions in either location are
 not appropriate for the selected operation.
 
-Existing files B<will> be overwritten unless the C<:createonly> option
+Existing files B<will> be overwritten unless the C<:c> (C<:createonly>) option
 is selected.
 
 =end pod
@@ -46,7 +46,7 @@ my $debug = 0;
 
 sub cp(IO() $from, 
        IO() $to, 
-       Bool :$createonly, 
+       Bool :$c, 
        Bool :$r, 
        Bool :$i, 
        Bool :$v,
@@ -57,13 +57,14 @@ sub cp(IO() $from,
     if $from.f and not $to.d {
         # the core should take care of this okay
         say "Copying file '$from' to file '$to'." if $v;
+        my $createonly = $c ?? True !! False;
         $from.copy($to, :$createonly);
         return;
     }
 
     if $from.d and $to.f {
         # the core should fail on this
-        $from.copy($to, :$createonly);
+        $from.copy($to);
         return;
     }
 
@@ -72,14 +73,14 @@ sub cp(IO() $from,
         # transfer them as individual files, making
         # subdirs as needed in $to
 
-        # must consider the options recurse, interactive, createonly, quiet
+        # must consider the options recurse, interactive, createonly, verbose
         my @frompaths;
         if not $r {
-            say "Collecting paths (non-recursively) from directory '$from'." if $v;
+            note "Collecting paths (non-recursively) from directory '$from'." if $v;
             @frompaths = find :dir($from), :!recursive;
         }
         else {
-            say "Collecting paths (recursively) from directory '$from'." if $v;
+            note "Collecting paths (recursively) from directory '$from'." if $v;
             @frompaths = find :dir($from);
         }
 
@@ -98,19 +99,30 @@ sub cp(IO() $from,
             #note "DEBUG: subdir path: |$subdir|";
             #exit;
 
-            if $frompath.IO.d {
+            if $r and $frompath.IO.d {
                 # create the subdir in the $to directory
                 say "Creating directory '$topath'." if $v;
                 mkdir $topath;
             }
             else {
-                say "Copying file '$frompath' to directory '$topath'." if $v;
-                if $i and $topath.IO.f {
+                say "Copying file '$frompath' to '$topath'." if $v;
+                if $topath.IO.f {
+                    if $c {
+                        # createonly takes precedence
+                        say "Skipping existing file '$topath'" if $v;
+                        next PATH;
+                    }
+                    unless $i {
+                        # overwrite is default
+                        say "Overwriting existing file '$topath'" if $v;
+                        copy $frompath, $topath;
+                        next PATH;
+                    } 
                     my $repeat = 1;
                     while $repeat {
-                        my $res = prompt "Overwrite the existing file (y/N)? ";
+                        my $res = prompt "Overwrite the existing file '$topath'(y/N)? ";
                         if $res ~~ /:i y/ {
-                            say "Continuing with copying...";
+                            say "Overwriting '$topath'...";
                             $repeat = 0;
                         }
                         elsif $res ~~ /:i n/ {
@@ -122,7 +134,7 @@ sub cp(IO() $from,
                         }
                     }
                 }
-                copy $frompath, $topath, :$createonly;
+                copy $frompath, $topath;
             }
         }
         return
@@ -131,6 +143,7 @@ sub cp(IO() $from,
     if $from.f and $to.d {
         my $topath = "$to/{$from.basename}";
         say "Copying file '$from' to directory '$to'." if $v;
+        my $createonly = $c ?? True !! False;
         copy $from, $topath, :$createonly;
         return;
     }
@@ -250,7 +263,7 @@ multi sub copy(IO::Path $from where {$from.e and $from.d},
     note "DEBUG: dirs:" if $debug;
     #| Then recursively copy the sub directories
     for @dirs -> $d {
-        note "debug: copy $d, {$to}/{$d.basename}" if $debug;
+        $*ERR.say: "debug: copy $d, {$to}/{$d.basename}" if $debug;
         my $todir = "{$to}/{$d.basename}";
         mkdir $todir;
         copy $d, "{$to}/{$d.basename}".IO;

@@ -9,7 +9,7 @@ if not @*ARGS {
     print qq:to/HERE/;
     Usage: {$*PROGRAM.basename} go
 
-    Demonstrates use of 'File::Copy's exported routine 'cp.
+    Demonstrates use of 'File::Copy's exported routine 'cp'.
 
     HERE
     exit;    
@@ -32,4 +32,13 @@ say "File \$f2 is at '\$d1/d11/f2'";
 say "File \$f1 contents: '{$f1.IO.slurp.Str}'";
 say "File \$f2 contents: '{$f2.IO.slurp.Str}'";
 say "Copying first level children of \$d1 to \$d2";
+cp $d1, $d2, :v;
 
+say "Copying all children of \$d1 to \$d2";
+cp $d1, $d2, :v, :r;
+
+say "Copying all children of \$d1 to \$d2 (interactively)";
+cp $d1, $d2, :i, :r;
+
+say "Copying all children of \$d1 to \$d2 (createonly)";
+cp $d1, $d2, :c, :r;
